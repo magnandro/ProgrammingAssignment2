@@ -1,15 +1,45 @@
-## Put comments here that give an overall description of what your
-## functions do
+# COURSERA: R PROGRAMMING > WEEK 3 > ASSIGNMENT 2: LEXICAL SCOPING
+# Alejandro Moreno Fresneda
 
-## Write a short comment describing this function
+
+## Using cache to enhance the performance in R
+
+## This function creates a special matrix object that can cache its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    
+    m <- NULL
+    set <- function(y) {
+        x <<- y
+        m <<- NULL
+    }
+    get <- function() x
+    
+    setsolve <- function(solve) m <<- solve
+    
+    getsolve <- function() m
+    
+    list(set = set, get = get,setsolve = setsolve,getsolve = getsolve)
 }
 
 
-## Write a short comment describing this function
+## CacheSolve computes the inverse of the special matrox returned by makeCacheMatrix. 
+## If the inverse has been calculated before it retrieves the inverse from cache.
+
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    m <- x$getsolve()
+    if(!is.null(m)) {
+        message("getting cached data")
+        return(m)
+    }
+    data <- x$get()
+    m <- solve(data, ...)
+    x$setsolve(m)
+    m
 }
+
+
+
+
+
